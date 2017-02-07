@@ -1,6 +1,6 @@
 package com.universe.net.codec;
 
-import com.universe.net.message.UDPPacketRspMsg;
+import com.universe.net.protoc.UDPPacketRspMsg;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.socket.DatagramPacket;

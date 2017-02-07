@@ -7,7 +7,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 /**
  * Created by zg on 2017/2/7.
  */
-public class WebSocketEncoder extends MessageToByteEncoder<String> {
+public class TCPEncoder extends MessageToByteEncoder<String> {
 
 
     @Override

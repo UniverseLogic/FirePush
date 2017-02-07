@@ -1,7 +1,7 @@
 package com.universe.net.handler;
 
-import com.universe.net.message.UDPPacketReqMsg;
-import com.universe.net.message.UDPPacketRspMsg;
+import com.universe.net.protoc.UDPPacketReqMsg;
+import com.universe.net.protoc.UDPPacketRspMsg;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 

@@ -1,19 +1,15 @@
 package com.universe.net;
 
-import com.universe.net.codec.UDPDecoder;
-import com.universe.net.codec.UDPEncoder;
-import com.universe.net.handler.UDPServerHandler;
-import com.universe.net.handler.WebSocketServerHandler;
+import com.universe.net.pipeline.UDPPipeline;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -33,15 +29,7 @@ public class BootstrapFactory {
             bootstrap.group(loopGroup)
                     .channel(NioDatagramChannel.class)
                     .option(ChannelOption.SO_BROADCAST, true)
-                    .handler(new ChannelInitializer<NioDatagramChannel>() {
-                        @Override
-                        protected void initChannel(NioDatagramChannel channel) throws Exception {
-                            ChannelPipeline channelPipeline = channel.pipeline();
-                            channelPipeline.addLast("decoder", new UDPDecoder());
-                            channelPipeline.addLast("encoder", new UDPEncoder());
-                            channelPipeline.addLast("handler", new UDPServerHandler());
-                        }
-                    });
+                    .handler(new UDPPipeline());
             InetAddress address = InetAddress.getLocalHost();
             channel = bootstrap.bind(address, port).sync().channel();
             Executors.newSingleThreadExecutor().execute(() -> {
@@ -61,7 +49,7 @@ public class BootstrapFactory {
         }
     }
 
-    public static void startWebSocket(int port) {
+    public static void startTCP(int port, ChannelInitializer channelInitializer) {
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -69,16 +57,7 @@ public class BootstrapFactory {
         try {
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChannelInitializer<NioSocketChannel>() {
-                        @Override
-                        protected void initChannel(NioSocketChannel ch) throws Exception {
-                            ChannelPipeline channelPipeline = ch.pipeline();
-                            channelPipeline.addLast("codec", new HttpServerCodec());
-                            channelPipeline.addLast("aggregator", new HttpObjectAggregator(65536));
-                            channelPipeline.addLast("compression", new WebSocketServerCompressionHandler());
-                            channelPipeline.addLast("handler", new WebSocketServerHandler());
-                        }
-                    });
+                    .childHandler(channelInitializer);
             InetAddress address = InetAddress.getLocalHost();
             channel = serverBootstrap.bind(address, port).sync().channel();
             Executors.newSingleThreadExecutor().execute(() -> {

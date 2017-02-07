@@ -1,4 +1,4 @@
-package com.universe.net.message;
+package com.universe.net.protoc;
 
 import com.google.common.base.MoreObjects;
 
@@ -8,12 +8,14 @@ import java.net.InetSocketAddress;
 /**
  * Created by zg on 2017/2/7.
  */
-public class UDPPacketReqMsg implements Serializable {
+public class UDPPacketRspMsg implements Serializable {
     private String msg;
     private InetSocketAddress inetSocketAddress;
 
+    public UDPPacketRspMsg() {
+    }
 
-    public UDPPacketReqMsg(String msg, InetSocketAddress inetSocketAddress) {
+    public UDPPacketRspMsg(String msg, InetSocketAddress inetSocketAddress) {
         this.msg = msg;
         this.inetSocketAddress = inetSocketAddress;
     }

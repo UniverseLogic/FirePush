@@ -1,6 +1,7 @@
 package com.universe;
 
 import com.universe.net.BootstrapFactory;
+import com.universe.net.pipeline.WebSocketPipeline;
 
 /**
  * Created by zg on 2017/2/7.
@@ -8,6 +9,6 @@ import com.universe.net.BootstrapFactory;
 public class WebSocketServer {
 
     public static void main(String[] args) {
-        BootstrapFactory.startWebSocket(46002);
+        BootstrapFactory.startTCP(46002, new WebSocketPipeline());
     }
 }

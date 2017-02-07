@@ -1,14 +1,15 @@
-package com.universe.net;
+package com.universe.net.util;
 
-/**
- * Created by zg on 2017/2/7.
- */
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+/**
+ * Created by zg on 2017/2/7.
+ */
 
 public final class HttpHeaderUtil {
 
@@ -39,15 +40,15 @@ public final class HttpHeaderUtil {
      * {@link HttpVersion#isKeepAliveDefault()}.
      * <ul>
      * <li>If the connection is kept alive by default:
-     *     <ul>
-     *     <li>set to {@code "close"} if {@code keepAlive} is {@code false}.</li>
-     *     <li>remove otherwise.</li>
-     *     </ul></li>
+     * <ul>
+     * <li>set to {@code "close"} if {@code keepAlive} is {@code false}.</li>
+     * <li>remove otherwise.</li>
+     * </ul></li>
      * <li>If the connection is closed by default:
-     *     <ul>
-     *     <li>set to {@code "keep-alive"} if {@code keepAlive} is {@code true}.</li>
-     *     <li>remove otherwise.</li>
-     *     </ul></li>
+     * <ul>
+     * <li>set to {@code "keep-alive"} if {@code keepAlive} is {@code true}.</li>
+     * <li>remove otherwise.</li>
+     * </ul></li>
      * </ul>
      */
     public static void setKeepAlive(HttpMessage message, boolean keepAlive) {
@@ -74,10 +75,8 @@ public final class HttpHeaderUtil {
      * other.
      *
      * @return the content length
-     *
-     * @throws NumberFormatException
-     *         if the message does not have the {@code "Content-Length"} header
-     *         or its value is not a number
+     * @throws NumberFormatException if the message does not have the {@code "Content-Length"} header
+     *                               or its value is not a number
      */
     public static long getContentLength(HttpMessage message) {
         String value = message.headers().get(HttpHeaderNames.CONTENT_LENGTH);
@@ -103,8 +102,8 @@ public final class HttpHeaderUtil {
      * other.
      *
      * @return the content length or {@code defaultValue} if this message does
-     *         not have the {@code "Content-Length"} header or its value is not
-     *         a number
+     * not have the {@code "Content-Length"} header or its value is not
+     * a number
      */
     public static long getContentLength(HttpMessage message, long defaultValue) {
         String value = message.headers().get(HttpHeaderNames.CONTENT_LENGTH);
@@ -125,9 +124,10 @@ public final class HttpHeaderUtil {
 
     /**
      * Get an {@code int} representation of {@link #getContentLength(HttpMessage, long)}.
+     *
      * @return the content length or {@code defaultValue} if this message does
-     *         not have the {@code "Content-Length"} header or its value is not
-     *         a number. Not to exceed the boundaries of integer.
+     * not have the {@code "Content-Length"} header or its value is not
+     * a number. Not to exceed the boundaries of integer.
      */
     public static int getContentLength(HttpMessage message, int defaultValue) {
         return (int) Math.min(Integer.MAX_VALUE, HttpHeaderUtil.getContentLength(message, (long) defaultValue));
@@ -251,7 +251,7 @@ public final class HttpHeaderUtil {
 
     static void encodeAscii0(CharSequence seq, ByteBuf buf) {
         int length = seq.length();
-        for (int i = 0 ; i < length; i++) {
+        for (int i = 0; i < length; i++) {
             buf.writeByte(c2b(seq.charAt(i)));
         }
     }
@@ -263,5 +263,6 @@ public final class HttpHeaderUtil {
         return (byte) c;
     }
 
-    private HttpHeaderUtil() { }
+    private HttpHeaderUtil() {
+    }
 }

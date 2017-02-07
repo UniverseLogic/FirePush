@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by zg on 2017/2/7.
  */
-public class WebSocketDecoder extends ByteToMessageDecoder {
+public class TCPDecoder extends ByteToMessageDecoder {
     private final int headLength = 4;
 
     @Override
