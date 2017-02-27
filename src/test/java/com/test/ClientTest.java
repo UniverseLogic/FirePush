@@ -109,7 +109,7 @@ public class ClientTest extends TestCase {
                         }
                     });
 
-            Channel ch = b.connect("192.168.1.106", 46003).sync().channel();
+            Channel ch = b.connect("192.168.0.156", 46003).sync().channel();
             Executors.newSingleThreadExecutor().execute(() -> {
                 try {
                     ch.closeFuture().sync();
